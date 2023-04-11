@@ -3,25 +3,26 @@ import ccxt
 import random
 
 #----options----#
-cex_number = 1                         # 1 - использовать Binance, 2 - использовать OKX
-amount = [10, 13]                      # min/max сумма
-delay = [40, 50]                       # задержка между транзакциями
-shuffle_wallets = "no"                 # yes - перемешать кошельки, no - не перемешивать
-symbolWithdraw = "USDT"                # символ токена для вывода
-network = "BSC"                        # сеть для вывода
+cex_number = 2                                 # 1 - использовать Binance, 2 - использовать OKX
+amount = [0.001, 0.002]                        # [min, max] сумма, выбирается рандомно
+delay = [10, 50]                               # задержка между транзакциями, в секундах
+shuffle_wallets = "no"                         # yes - перемешать кошельки, no - не перемешивать
+symbolWithdraw = "ETH"                         # символ токена для вывода
+network = "Arbitrum one"                       # ID сети, можно узнать в таблице
+proxy_server = "http://login:password@ip:port" #укажите свой прокси для OKx
 #----options----#
 
-proxies = {
-  "https": "",
-}
-
 class API:
-    binance_apikey = ""
-    binance_apisecret = ""
-    okx_apikey = ""
-    okx_apisecret = ""
-    okx_passphrase = ""
+    binance_apikey = "YOUR_APIKEY_BINANCE"
+    binance_apisecret = "YOUR_APISECRET_BINANCE"
+    okx_apikey = "YOUR_APIKEY_OKX"
+    okx_apisecret = "YOUR_APISECRET_OKX"
+    okx_passphrase = "YOUR_PASSPHRASE"
 
+proxies = {
+  "http": proxy_server,
+  "https": proxy_server,
+}
 
 def binance_withdraw(address, amount_to_withdrawal, wallet_number):
     exchange = ccxt.binance({
@@ -100,10 +101,11 @@ def get_withdrawal_fee(symbolWithdraw, chainName):
                     network_id = network_data['id']
                     if network_id == chainName:
                         withdrawal_fee = currency_info['networks'][network]['fee']
-                        return withdrawal_fee
-    return None
-
-    raise ValueError(f"Chain name {chain_name} not found for currency {currency}.")
+                        if withdrawal_fee == 0:
+                            return 0
+                        else:
+                            return withdrawal_fee
+    raise ValueError(f" не могу получить значение комиссии, проверьте значения symbolWithdraw и network")
 
 def choose_cex(address, amount_to_withdrawal, wallet_number):
     if cex_number == 1:
@@ -139,6 +141,9 @@ if __name__ == "__main__":
         time.sleep(random.randint(2, 4))
 
         for wallet_number, address in numbered_wallets:
-            amount_to_withdrawal = round(random.uniform(amount[0], amount[1]), 3)
+            amount_to_withdrawal = round(random.uniform(amount[0], amount[1]), 5)
             choose_cex(address, amount_to_withdrawal, wallet_number)
             time.sleep(random.randint(delay[0], delay[1]))
+
+
+
