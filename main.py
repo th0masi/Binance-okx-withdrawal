@@ -9,7 +9,7 @@ delay = [10, 50]                               # задержка между т�
 shuffle_wallets = "no"                         # yes - перемешать кошельки, no - не перемешивать
 symbolWithdraw = "ETH"                         # символ токена для вывода
 network = "Arbitrum one"                       # ID сети, можно узнать в таблице
-proxy_server = "http://login:password@ip:port" #укажите свой прокси для OKx
+proxy_server = "http://login:password@ip:port" # укажите свой прокси для OKx
 #----options----#
 
 class API:
