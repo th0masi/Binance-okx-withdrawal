@@ -1,3 +1,7 @@
+# Обновление
+all-in-one withdrawal - https://github.com/th0masi/all-cex-withdrawal
+Текущая версия не будет поддерживаться, создал новый со всеми биржами!
+
 # Описание проекта
 
 Cкрипт на Python для автоматического вывода токенов c бирж Binance или OKX.
